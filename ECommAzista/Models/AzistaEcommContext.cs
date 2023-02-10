@@ -251,6 +251,7 @@ namespace ECommAzista.Models
         public virtual DbSet<_28993052155Branded3> _28993052155Branded3 { get; set; }
         public virtual DbSet<_30533141> _30533141 { get; set; }
         public virtual DbSet<_3053314190RitemedPharex> _3053314190RitemedPharex { get; set; }
+        public virtual DbSet<OtpValidation> OtpValidation { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

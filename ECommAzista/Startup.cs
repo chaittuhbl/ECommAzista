@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;    
+using Newtonsoft.Json.Serialization;
+using ECommAzista.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommAzista
 {
@@ -38,6 +40,9 @@ namespace ECommAzista
             = new DefaultContractResolver());
 
             services.AddControllers();
+            
+            services.AddDbContext<AzistaEcommContext>(options =>
+         options.UseSqlServer(Configuration.GetConnectionString("AzistaAppCon")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
