@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="jQuery" Version="3.6.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ECommAzista\ECommAzista.csproj" />
   </ItemGroup>
 
 </Project>

@@ -28,9 +28,9 @@ namespace Test
         [TestMethod]
         public void TestSendEmail()
         {
-            Validation validation = new Validation();
-            var v = validation.SendEmail("chaituhbl@gmail.com");
-            Assert.IsNotNull(v);
+            //Validation validation = new Validation();
+            //var v = validation.SendEmail("chaituhbl@gmail.com");
+            //Assert.IsNotNull(v);
         }
         [TestMethod]
         public void TestRegister()

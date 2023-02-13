@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewData["Title"] = "ToList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ToList</h1>
+
+
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add New CancerType</button>
+</p>
+
+<div id="divtable">
+    @foreach (var item in Model)
+    {
+        @*<div id="@("div1-"+item.Id)" class="row _row_singl">*@
+
+        <div id="div1" class="div1 row _row_singl">
+            <div id="@("child1-" + item.Id)" class="col-sm-1">
+                <div class="labe_l">Id</div>
+                <div id="@("divID" + item.Id)" class="_data fw-600">@item.Id</div>
+                <input type="text" value="@item.Id" id="@("inputid" + item.Id)" Style="display: none" />
+            </div>
+            <div id="@("child2-" + item.Id)" class="col-sm-1">
+                <div class="labe_l">CancerType</div>
+                <div id="@("divType" + item.Id)" class="_data">@item.GenericName</div>
+                <input type="text" value="@item.GenericName" id="@("inputType" + item.Id)" class="inputType" size="10" Style="display: none" />
+            </div>
+            <div id="@("child3-" + item.Id)" class="ACTIVE col-sm-1">
+                <div class="labe_l">ACTIVE</div>
+                <div id="@("divActiveStatus" + item.Id)" class="_data">@item.IsActive</div>
+                @*  <input type="text" value="@item.ActiveStatus" size="1" id="@("inputActiveStatus" + item.Id)" Style="display: none" />*@
+                <select id="@("ddlActiveStatus"+item.Id)" Style="display: none">
+                </select>
+            </div>
+            <div id="@("child4-" + item.Id)" class="col-sm-1">
+                <div class="labe_l">Createdon</div>
+                <div id="@("divCreatedOn" + item.Id)" class="_data">@item.CreatedDate</div>
+                <input type="text" value="@item.CreatedDate" id="@("inputCreatedOn" + item.Id)" Style="display: none" />
+            </div>
+            <div id="@("child5-" + item.Id)" class="col-sm-3">
+                <div class="labe_l">Action</div>
+                <div class="_data">
+
+                    @*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="getbyID(' @item.Id ');">Edit</button>*@
+                    <button type="button" id="@("btnEdit1"+item.Id)" class="btnedit btn btn-primary" onclick="getbyID(' @item.Id ');">Edit</button>
+                    <button type="button" id="@("btnUpdate1"+item.Id)" class="btnupdate btn btn-primary" style="display:none;" onclick="Update1(' @item.Id ');">Update</button>
+                    <button type="button" id="@("btnCancel1"+item.Id)" class="btncancel btn btn-primary" style="display:none;" onclick="clearTextBox(' @item.Id ');">Cancel</button>
+
+                    @{
+                        if (item.IsActive==true)
+                        {
+                            <button type="button" id="@("btnDel" + item.Id)" class="btn btn-primary" onclick="ActiveDeactive('@item.Id ');">
+                                Deactivate
+                            </button>
+                        }
+                        else if (item.IsActive==false)
+                        {
+                            <button type="button" id="@("btnDel" + item.Id)" class="btn btn-primary" onclick="ActiveDeactive('@item.Id ');">
+                                Activate
+                            </button>
+                        }
+                        else { }
+                    }
+
+
+                </div>
+            </div>
+
+
+        </div>
+    }
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dissmiss="modal"><span aria-hidden="true">×</span></button>*@
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="myModalLabel">Add CancerType</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="ID">ID</label>
+                        <input type="text" class="form-control" id="ID" placeholder="Id" disabled="disabled" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Type">Type</label>
+                        <input type="text" class="form-control" id="Type" placeholder="Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="ActiveStatus">ActiveStatus</label>
+                        @*<input type="text" class="form-control" id="ActiveStatus" placeholder="Age" />*@
+                        <select id="ActiveStatus">
+                            <option selected value="">Select</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
