@@ -28,6 +28,19 @@ namespace ECommAzista.Controllers
             var product = await _azistaEcommContext.Product.FindAsync(Id);
             return Ok(product);
         }
+        [HttpPost]
+        public async Task<IActionResult> PostProducts(Product product)
+        {
+            if (product == null)
+            {
+                return BadRequest();
+            }
+            // generic.CreatedOnUtc = DateTime.UtcNow;
+
+            await _azistaEcommContext.Product.AddAsync(product);
+            return Ok(_azistaEcommContext.SaveChangesAsync());
+        }
+
         [HttpPut]
         public async Task<ActionResult<Product>> UpdateProducts(Product product)
         {

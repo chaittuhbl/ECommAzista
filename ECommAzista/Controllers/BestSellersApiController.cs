@@ -30,6 +30,18 @@ namespace ECommAzista.Controllers
             var bestsellers = await _azistaEcommContext.BestSellingProducts.FindAsync(Id);
             return Ok(bestsellers);
         }
+        [HttpPost]
+        public async Task<IActionResult> PostBestSellers(BestSellingProducts bestSellingProducts)
+        {
+            if (bestSellingProducts == null)
+            {
+                return BadRequest();
+            }
+            // generic.CreatedOnUtc = DateTime.UtcNow;
+
+            await _azistaEcommContext.BestSellingProducts.AddAsync(bestSellingProducts);
+            return Ok(_azistaEcommContext.SaveChangesAsync());
+        }
         [HttpPut]
         public async Task<ActionResult<BestSellingProducts>> UpdateBestsellingproducts(BestSellingProducts bestSellingProducts)
         {

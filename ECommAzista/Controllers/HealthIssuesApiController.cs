@@ -29,6 +29,18 @@ namespace ECommAzista.Controllers
             var healthIssues = await _azistaEcommContext.HealthIssue.FindAsync(Id);
             return Ok(healthIssues);
         }
+        [HttpPost]
+        public async Task<IActionResult> PostHealthIssue(HealthIssue healthIssue)
+        {
+            if (healthIssue == null)
+            {
+                return BadRequest();
+            }
+            // generic.CreatedOnUtc = DateTime.UtcNow;
+
+            await _azistaEcommContext.HealthIssue.AddAsync(healthIssue);
+            return Ok(_azistaEcommContext.SaveChangesAsync());
+        }
         [HttpPut]
         public async Task<ActionResult<HealthIssue>> UpdateHealthIssues(HealthIssue healthIssue)
         {
