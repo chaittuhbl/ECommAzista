@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script type="text/javascript">
+alert('Hi');
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "http://52.172.49.176:8087/api/GenericsApi",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                //Clear all previous list of members
+                $("#MemberList").empty();
+
+                //Display Asp.Net Web API response in console log
+                //You can see console log value in developer tool
+                //by pressing F12 function key.
+                console.log(response);
+
+
+                // Variable created to store <li>Memeber Detail</li>
+                var ListValue = "";
+
+                //Variable created to iterate the json array values.
+                var i;
+
+                //Generic loop to iterate the response arrays.
+                for (i = 0; i < response.length; ++i) {
+                        ListValue += "<li>" + response[i].GenericCode + " --- " + response[i].GenericName + " --- " + response[i].GenericSynonyms + " --- " + response[i].[Group] +
+                }
+
+                //Add/Append the formatted values of ListValue variable into ID called "MemberList"
+                $("#MemberList").append(ListValue);
+            },
+            failure: function (response) {
+                alert(response.responseText);
+                alert("Failure");
+            },
+            error: function (response) {
+                alert(response);
+                alert("Error");
+            }
+        });
+    });
+</script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $.ajax({
+                type: "GET",
+                url: "http://52.172.49.176:8087/api/GenericsApi/1",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    //Clear all previous list of members
+                    $("#MemberList").empty();
+
+                    //Display Asp.Net Web API response in console log
+                    //You can see console log value in developer tool
+                    //by pressing F12 function key.
+                    console.log(response);
+
+
+                    // Variable created to store <li>Memeber Detail</li>
+                    var ListValue = "";
+
+                    //Variable created to iterate the json array values.
+                    var i;
+
+                    //Generic loop to iterate the response arrays.
+                    for (i = 0; i < response.length; ++i) {
+                        ListValue += "<li>" + response[i].GenericCode + " --- " + response[i].GenericName + " --- " + response[i].GenericSynonyms + " --- " + response[i].[Group] +
+                        }
+
+                    //Add/Append the formatted values of ListValue variable into ID called "MemberList"
+                    $("#MemberList").append(ListValue);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                    alert("Failure");
+                },
+                error: function (response) {
+                    alert(response);
+                    alert("Error");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <h2>C-Sharpcorner Member List</h2>
+
+    <!--Member List will appened here -->
+    <ul id="MemberList">
+    </ul>
+
+</body>
+</html>  
