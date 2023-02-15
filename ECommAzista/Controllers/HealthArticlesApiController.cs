@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 using System.Threading.Tasks;
+//using ECommAzista.ViewModels;
 
 namespace ECommAzista.Controllers
 {
@@ -29,16 +32,33 @@ namespace ECommAzista.Controllers
             return Ok(healthArticle);
         }
         [HttpPost]
-        public async Task<IActionResult> PostHealthArticle(HealthArticle healthArticle)
+        public async Task<IActionResult> PostHealthArticle([FromForm]HealthArticle healthArticle)
         {
             if (healthArticle == null)
             {
                 return BadRequest();
             }
             // generic.CreatedOnUtc = DateTime.UtcNow;
-
+            string path = await UploadImage(healthArticle.FileUri);
+            healthArticle.Image = path;
             await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
             return Ok(_azistaEcommContext.SaveChangesAsync());
+        }
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<string> UploadImage(IFormFile file)
+        {
+            
+            var special=Guid.NewGuid().ToString();
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(),
+                @"\Images", special + "-" + file.FileName);
+            using (FileStream ms = new FileStream(filepath, FileMode.Create))
+            { 
+            await file.CopyToAsync(ms);
+            }
+            var filename=special+ "-" + file.FileName;
+            return filepath;
+
         }
         [HttpPut]
         public async Task<ActionResult<HealthArticle>> UpdateHealthArticle(HealthArticle healthArticle)
