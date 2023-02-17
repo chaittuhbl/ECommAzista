@@ -41,8 +41,9 @@ namespace ECommAzista.Controllers
             // generic.CreatedOnUtc = DateTime.UtcNow;
             string path = await UploadImage(healthArticle.FileUri);
             healthArticle.Image = path;
+            healthArticle.CreatedOnUtc= DateTime.UtcNow;
             await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
-            return Ok(_azistaEcommContext.SaveChangesAsync());
+            return Ok(await _azistaEcommContext.SaveChangesAsync());
         }
         [HttpPost]
         [Route("UploadImage")]
@@ -61,8 +62,14 @@ namespace ECommAzista.Controllers
 
         }
         [HttpPut]
-        public async Task<ActionResult<HealthArticle>> UpdateHealthArticle(HealthArticle healthArticle)
+        public async Task<ActionResult<HealthArticle>> UpdateHealthArticle([FromForm]HealthArticle healthArticle)
         {
+            if(healthArticle == null)
+            {
+                return BadRequest();
+            }
+            
+            healthArticle.CreatedOnUtc= DateTime.UtcNow;
             _azistaEcommContext.HealthArticle.Update(healthArticle);
             return Ok(await _azistaEcommContext.SaveChangesAsync());
         }
