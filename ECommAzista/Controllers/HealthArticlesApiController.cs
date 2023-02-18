@@ -34,7 +34,18 @@ namespace ECommAzista.Controllers
             _azistaEcommContext.HealthArticle.Update(healthArticle);
             return Ok(await _azistaEcommContext.SaveChangesAsync());
         }
+        [HttpPost]
+        public async Task<IActionResult> PostHealthArticle(HealthArticle healthArticle)    
+        {
+            if (healthArticle == null)
+            {
+                return BadRequest();
+            }
+            // generic.CreatedOnUtc = DateTime.UtcNow;
 
+            await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
+            return Ok(await _azistaEcommContext.SaveChangesAsync());
+        }
         [HttpDelete]
         public async Task<ActionResult> DeleteHealthArticle(int Id)
         {

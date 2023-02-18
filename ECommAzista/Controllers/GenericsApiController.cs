@@ -171,6 +171,18 @@ namespace ECommAzista.Controllers
             var generic = await _azistaEcommContext.GenericMaster.FindAsync(Id);
             return Ok(generic);
         }
+        [HttpPost]
+        public async Task<IActionResult> PostGenerics(GenericMaster generic)
+        {
+            if (generic == null)
+            {
+                return BadRequest();
+            }
+            // generic.CreatedOnUtc = DateTime.UtcNow;
+
+            await _azistaEcommContext.GenericMaster.AddAsync(generic);
+            return Ok(await _azistaEcommContext.SaveChangesAsync());
+        }
         [HttpPut]
         public async Task<ActionResult<GenericMaster>> UpdateGenerics(GenericMaster generic)
         {
