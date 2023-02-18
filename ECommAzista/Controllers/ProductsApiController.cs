@@ -29,7 +29,7 @@ namespace ECommAzista.Controllers
             return Ok(product);
         }
         [HttpPost]
-            public async Task<IActionResult> PostProducts(Product product)
+        public async Task<IActionResult> PostProducts(Product product)
         {
             if (product == null)
             {
@@ -38,8 +38,9 @@ namespace ECommAzista.Controllers
             // generic.CreatedOnUtc = DateTime.UtcNow;
 
             await _azistaEcommContext.Product.AddAsync(product);
-            return Ok(await _azistaEcommContext.SaveChangesAsync());
+            return Ok(_azistaEcommContext.SaveChangesAsync());
         }
+
         [HttpPut]
         public async Task<ActionResult<Product>> UpdateProducts(Product product)
         {

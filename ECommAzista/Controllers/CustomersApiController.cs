@@ -32,6 +32,19 @@ namespace ECommAzista.Controllers
             var customer = await _azistaEcommContext.Customer.FindAsync(Id);
             return Ok(customer);
         }
+        //[HttpPost]
+        //public async Task<IActionResult> Login(LoginVm customer)
+        //{
+        //    try
+        //    {
+        //        if(customer == null) { return BadRequest(); }
+        //        var cust=_azistaEcommContext.Customer.Where(x=>x.Username==customer.userName && x.CustomerPassword.==customer.password).
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return Ok();
+        //    }            
+        //}
         [HttpPost]
         public async Task<IActionResult> Register(Customer customer)
         {
@@ -79,9 +92,16 @@ namespace ECommAzista.Controllers
             {
                 return BadRequest();
             }
-            customer.CreatedOnUtc = DateTime.UtcNow;
-
+            customer.CreatedOnUtc = DateTime.UtcNow;          
+            
             await _azistaEcommContext.Customer.AddAsync(customer);
+            CustomerPassword customerPassword = new CustomerPassword()
+            {
+                CustomerId=customer.Id,
+               // Password=customer.CustomerPassword.FirstOrDefault().Password,
+                CreatedOnUtc=DateTime.UtcNow
+            };
+            await _azistaEcommContext.CustomerPassword.AddAsync(customerPassword);
             return Ok(_azistaEcommContext.SaveChangesAsync());
         }
         [HttpPut]

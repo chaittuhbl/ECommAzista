@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 using System.Threading.Tasks;
+//using ECommAzista.ViewModels;
 
 namespace ECommAzista.Controllers
 {
@@ -28,9 +31,45 @@ namespace ECommAzista.Controllers
             var healthArticle = await _azistaEcommContext.HealthArticle.FindAsync(Id);
             return Ok(healthArticle);
         }
-        [HttpPut]
-        public async Task<ActionResult<HealthArticle>> UpdateHealthArticle(HealthArticle healthArticle)
+        [HttpPost]
+        public async Task<IActionResult> PostHealthArticle([FromForm]HealthArticle healthArticle)
         {
+            if (healthArticle == null)
+            {
+                return BadRequest();
+            }
+            // generic.CreatedOnUtc = DateTime.UtcNow;
+            string path = await UploadImage(healthArticle.FileUri);
+            healthArticle.Image = path;
+            healthArticle.CreatedOnUtc= DateTime.UtcNow;
+            await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
+            return Ok(await _azistaEcommContext.SaveChangesAsync());
+        }
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<string> UploadImage(IFormFile file)
+        {
+            
+            var special=Guid.NewGuid().ToString();
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(),
+                @"\Images", special + "-" + file.FileName);
+            using (FileStream ms = new FileStream(filepath, FileMode.Create))
+            { 
+            await file.CopyToAsync(ms);
+            }
+            var filename=special+ "-" + file.FileName;
+            return filepath;
+
+        }
+        [HttpPut]
+        public async Task<ActionResult<HealthArticle>> UpdateHealthArticle([FromForm]HealthArticle healthArticle)
+        {
+            if(healthArticle == null)
+            {
+                return BadRequest();
+            }
+            
+            healthArticle.CreatedOnUtc= DateTime.UtcNow;
             _azistaEcommContext.HealthArticle.Update(healthArticle);
             return Ok(await _azistaEcommContext.SaveChangesAsync());
         }

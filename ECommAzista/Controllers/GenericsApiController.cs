@@ -178,7 +178,7 @@ namespace ECommAzista.Controllers
             {
                 return BadRequest();
             }
-            // generic.CreatedOnUtc = DateTime.UtcNow;
+           // generic.CreatedOnUtc = DateTime.UtcNow;
 
             await _azistaEcommContext.GenericMaster.AddAsync(generic);
             return Ok(await _azistaEcommContext.SaveChangesAsync());

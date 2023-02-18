@@ -39,7 +39,7 @@ namespace ECommAzista.Controllers
             // generic.CreatedOnUtc = DateTime.UtcNow;
 
             await _azistaEcommContext.HealthIssue.AddAsync(healthIssue);
-            return Ok(await _azistaEcommContext.SaveChangesAsync());
+            return Ok(_azistaEcommContext.SaveChangesAsync());
         }
         [HttpPut]
         public async Task<ActionResult<HealthIssue>> UpdateHealthIssues(HealthIssue healthIssue)

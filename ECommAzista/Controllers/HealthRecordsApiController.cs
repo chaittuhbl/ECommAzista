@@ -29,7 +29,7 @@ namespace ECommAzista.Controllers
             return Ok(healthrecords);
         }
         [HttpPost]
-        public async Task<IActionResult> PostHealthRecord(HealthRecord healthRecord)  
+        public async Task<IActionResult> PostHealthRecord(HealthRecord healthRecord)
         {
             if (healthRecord == null)
             {
@@ -38,7 +38,7 @@ namespace ECommAzista.Controllers
             // generic.CreatedOnUtc = DateTime.UtcNow;
 
             await _azistaEcommContext.HealthRecord.AddAsync(healthRecord);
-            return Ok(await _azistaEcommContext.SaveChangesAsync());
+            return Ok(_azistaEcommContext.SaveChangesAsync());
         }
         [HttpPut]
         public async Task<ActionResult<HealthRecord>> UpdateHealthRecords(HealthRecord healthRecord)

@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="images\thumbs\" />
+    <Folder Include="Images\" />
   </ItemGroup>
 
 
