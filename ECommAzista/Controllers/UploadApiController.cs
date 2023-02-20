@@ -41,7 +41,8 @@ namespace ECommAzista.Controllers
                     {
                         objFile.files.CopyTo(fileStream);
                         fileStream.Flush();
-                        return "\\Upload\\" + objFile.files.FileName;
+                        var imgupload= "\\Upload\\" + objFile.files.FileName;
+                        return imgupload;
 
                     }
                 }
