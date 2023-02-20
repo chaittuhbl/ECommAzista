@@ -6,47 +6,55 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using ECommAzista.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ECommAzista.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UploadApiController : ControllerBase
-    {            
+    {
 
+        private IWebHostEnvironment environment;
+        public UploadApiController(IWebHostEnvironment _environment)
+        {
+            environment = _environment;
+        }
+        public class FIleUploadApi
+        {
+            public IFormFile files { get; set; }
+        }
         [HttpPost]
-        [Route("UploadFile")]
-        public Response UploadFile([FromForm] FileModel fileModel)
-        { 
-            Response response=new Response();
+        public async Task<string> Post([FromForm] FIleUploadApi objFile)
+        {
             try
             {
-                string path = Path.Combine(@"D:\Images", fileModel.FileName);
-                using (FileStream stream = new FileStream(path, FileMode.Create))
-                { 
-                    fileModel.file.CopyTo(stream);
+                if (objFile.files.Length > 0)
+                {
+                    string wwwPath = this.environment.WebRootPath;
+                    string contentPath = this.environment.ContentRootPath;
+                    if (!Directory.Exists(wwwPath + "\\Upload\\"))
+                    {
+                        Directory.CreateDirectory(environment.WebRootPath + "\\Upload\\");
+                    }
+                    using (FileStream fileStream = System.IO.File.Create(environment.WebRootPath + "\\Upload\\" + objFile.files.FileName))
+                    {
+                        objFile.files.CopyTo(fileStream);
+                        fileStream.Flush();
+                        return "\\Upload\\" + objFile.files.FileName;
+
+                    }
                 }
-                
-                response.StatusCode = 200;
-                response.ErrorMessage = "Image Created Successfully";    
+                else
+                {
+                    return "Failed";
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                response.StatusCode = 100;
-                response.ErrorMessage = "";
+
+                throw;
             }
-
-            return response;
-
         }
-
-       
-
-    }
-
-    public class Response
-    {
-        public int StatusCode { get; set; }
-        public string ErrorMessage { get; set; }
     }
 }

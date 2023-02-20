@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
 using ECommAzista.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace ECommAzista
 {
@@ -55,6 +56,10 @@ namespace ECommAzista
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseRouting();
 
@@ -63,6 +68,11 @@ namespace ECommAzista
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("could not find anything");
+
             });
         }
     }
