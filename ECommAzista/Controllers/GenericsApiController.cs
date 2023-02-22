@@ -184,6 +184,7 @@ namespace ECommAzista.Controllers
             return Ok(await _azistaEcommContext.SaveChangesAsync());
         }
         [HttpPut]
+        [Route("UpdateGenerics")]
         public async Task<ActionResult<GenericMaster>> UpdateGenerics(GenericMaster generic)
         {
             _azistaEcommContext.GenericMaster.Update(generic);

@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/UploadApi",
+      "launchUrl": "api/HealthArticlesApi",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +20,7 @@
     "ECommAzista": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/UploadApi",
+      "launchUrl": "api/HealthArticlesApi",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

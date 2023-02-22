@@ -7,6 +7,8 @@ using System.IO;
 using System.Threading.Tasks;
 using ECommAzista.Models;
 using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ECommAzista.Controllers
 {
@@ -22,11 +24,20 @@ namespace ECommAzista.Controllers
         }
         public class FIleUploadApi
         {
+            public int Id { get; set; }
             public IFormFile files { get; set; }
+            public string Employees { get; set; }
+        }
+        public class Employee
+        {
+            public int EmpId { get; set; }
+            public string EmpName { get; set; }
+            public string Designation { get; set; }
         }
         [HttpPost]
         public async Task<string> Post([FromForm] FIleUploadApi objFile)
         {
+            List<Employee> empList = JsonConvert.DeserializeObject<List<Employee>>(objFile.Employees);
             try
             {
                 if (objFile.files.Length > 0)
