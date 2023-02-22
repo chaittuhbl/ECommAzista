@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<a href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/MyScripts/HealthArticle.js"></script>
+<style>
+    table thead tr th {
+        width: 10% !important;
+    }
+</style>
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add </button>
+</p>
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table table-striped table-bordered zero-configuration custom-table-set" id="tbl">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>ACTIVE</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>               
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dissmiss="modal"><span aria-hidden="true">×</span></button>*@
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="myModalLabel">Add </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="ID">ID</label>
+                        <input type="text" class="form-control" id="ID" placeholder="Id" disabled="disabled" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Type">BrandName</label>
+                        <input type="text" class="form-control" id="txtBrandName" placeholder="Name" />
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="ActiveStatus">ActiveStatus</label>
+                        @*<input type="text" class="form-control" id="ActiveStatus" placeholder="Age" />*@
+                        <select id="ActiveStatus">
+                            <option selected value="">Select</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
