@@ -7,8 +7,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using static ECommAzista.Controllers.UploadApiController;
+//using static ECommAzista.Controllers.UploadApiController;
 //using ECommAzista.ViewModels;
+
 
 namespace ECommAzista.Controllers
 {
@@ -32,11 +33,19 @@ namespace ECommAzista.Controllers
         {
             public IFormFile files { get; set; }
         }
+        //[HttpGet("{imagePath}")]
+        //public IActionResult GetImage(string imagePath)
+        //{
+        //    var imageBytes = System.IO.File.ReadAllBytes(imagePath);
+        //    var base64Image = Convert.ToBase64String(imageBytes);
+        //    return Ok(new { Image = base64Image });
+        //}
 
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
             var healthArticles = await _azistaEcommContext.HealthArticle.ToListAsync();
+            // var imageFileStream = System.IO.File.OpenRead(Image);
             return Ok(healthArticles);
         }
         [Route("GetById/{Id}")]
@@ -45,90 +54,57 @@ namespace ECommAzista.Controllers
             var healthArticle = await _azistaEcommContext.HealthArticle.FindAsync(Id);
             return Ok(healthArticle);
         }
-        //[HttpPost]
-        //public async Task<IActionResult> PostHealthArticle([FromForm] HealthArticle healthArticle)
-        //{
-        //    if (healthArticle == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    // generic.CreatedOnUtc = DateTime.UtcNow;
-        //    string path = await UploadImage(imgupload.FileUri);
-        //    healthArticle.Image = path;
-        //    healthArticle.CreatedOnUtc = DateTime.UtcNow;
-        //    await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
-        //    return Ok(await _azistaEcommContext.SaveChangesAsync());
-        //}
         [HttpPost]
-        [Route("UploadImage")]
-        public async Task<string> UploadImage([FromForm] FIleUploadApi objFile, HealthArticle healthArticle)
-        {
-            try
-            {
-                if (objFile.files.Length > 0)
-                {
-                    string wwwPath = this.environment.WebRootPath;
-                    string contentPath = this.environment.ContentRootPath;
-                    if (!Directory.Exists(wwwPath + "\\Upload\\"))
-                    {
-                        Directory.CreateDirectory(environment.WebRootPath + "\\Upload\\");
-                    }
-                    using (FileStream fileStream = System.IO.File.Create(environment.WebRootPath + "\\Upload\\" + objFile.files.FileName))
-                    {
-                        objFile.files.CopyTo(fileStream);
-                        fileStream.Flush();
-                        var imgupload = "\\Upload\\" + objFile.files.FileName;
-                        // return imgupload;
-                        string path = imgupload;
-                        healthArticle.Image = path;
-                        healthArticle.CreatedOnUtc = DateTime.UtcNow;
-                        await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
-                        return "Success";
-                     //   return Ok(await _azistaEcommContext.SaveChangesAsync());
-                     //   return Ok(await _azistaEcommContext.SaveChangesAsync());
-
-                    }
-                }
-                else
-                {
-                    return "Failed";
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        //[HttpPost]
-        //[Route("UploadImage")]
-        //public async Task<string> UploadImage(IFormFile file)
-        //{
-
-        //    var special = Guid.NewGuid().ToString();
-        //    var filepath = Path.Combine(Directory.GetCurrentDirectory(),
-        //        @"\Images", special + "-" + file.FileName);
-        //    using (FileStream ms = new FileStream(filepath, FileMode.Create))
-        //    {
-        //        await file.CopyToAsync(ms);
-        //    }
-        //    var filename = special + "-" + file.FileName;
-        //    return filepath;
-
-        //}
-        [HttpPut]
-        public async Task<ActionResult<HealthArticle>> UpdateHealthArticle([FromForm] HealthArticle healthArticle)
+        public async Task<IActionResult> PostHealthAricles([FromForm]HealthArticle healthArticle, IFormFile file)
         {
             if (healthArticle == null)
             {
                 return BadRequest();
             }
-
+            if (file != null && file.Length > 0)
+            {
+                var Image = "/images/" + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                using (var stream = new FileStream("wwwroot" + Image, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                healthArticle.Image = Image;
+            }
             healthArticle.CreatedOnUtc = DateTime.UtcNow;
-            _azistaEcommContext.HealthArticle.Update(healthArticle);
+
+            await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
             return Ok(await _azistaEcommContext.SaveChangesAsync());
         }
+        [Route("UpdateHealthArticle")]
+        [HttpPut("api/HealthArticle/{Id}")]        
+        public async Task<IActionResult> UpdateHealthArticle([FromForm]int Id, [FromForm] HealthArticle model, IFormFile file)
+        {
+            if (ModelState.IsValid)
+            {
+                HealthArticle existingHealthArticle = _azistaEcommContext.HealthArticle.Find(Id);
+                if (existingHealthArticle != null)
+                {
+                    if (file != null)
+                    {
+                        string uploadsFolder = Path.Combine(environment.WebRootPath, "images");
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                        existingHealthArticle.Image = uniqueFileName;
+                    }
+                    // Update the model in your database here
+                    // ...
+                    return Ok(existingHealthArticle);
+                }
+                return NotFound();
+            }
+            return BadRequest(ModelState);
+        }
+
+        
 
         [HttpDelete]
         public async Task<ActionResult> DeleteHealthArticle(int Id)
@@ -137,6 +113,15 @@ namespace ECommAzista.Controllers
             {
                 return NotFound();
             }
+            //if (file != null && file.Length > 0)
+            //{
+            //    var Image = "/images/" + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            //    using (var stream = new FileStream("wwwroot" + Image, FileMode.Create))
+            //    {
+            //        await file.CopyToAsync(stream);
+            //    }
+            //    healthArticle.Image = Image;
+            //}
             var healthArticle = _azistaEcommContext.HealthArticle.Find(Id);
             _azistaEcommContext.HealthArticle.Remove(healthArticle);
             return Ok(await _azistaEcommContext.SaveChangesAsync());
