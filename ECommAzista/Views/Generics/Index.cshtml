@@ -1,0 +1,50 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <!--<script src="~/lib/jquery/jquery.min.js"></script>-->
+</head>
+<body>
+
+    <script src="../ECommAzista/wwwroot/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript">
+        alert('Hi');
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "http://52.172.49.176:8087/api/GenericsApi",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    //alert('hru');
+                    alert(JSON.stringify(data));
+                    $("#DIV").html('data');
+                    var DIV = '';
+                    $.each(data, function (i, item) {
+                        var rows = "<tr>" +
+                            "<td id='GenericCode'>" + item.GenericCode + "</td>" +
+                            "<td id='GenericName'>" + item.GenericName + "</td>" +
+                            "<td id='GenericSynonyms'>" + item.GenericSynonyms + "</td>" +
+                            "<td id='Group'>" + item.Group + "</td>" +
+
+                            "</tr>";
+                        $('#Table').append(rows);
+                    }); //End of foreach Loop
+                    console.log(data);
+                }, //End of AJAX Success function
+
+                failure: function (data) {
+                    alert(data.responseText);
+                }, //End of AJAX failure function
+                error: function (data) {
+                    alert(data.responseText);
+                } //End of AJAX error function
+
+            });
+        });
+    </script>
+</body>
+</html>

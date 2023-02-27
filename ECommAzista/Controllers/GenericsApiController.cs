@@ -160,6 +160,7 @@ namespace ECommAzista.Controllers
         }
 
         [HttpGet]
+        [Route("GetGenerics")]
         public async Task<IActionResult> GetAsync()
         {
             var generics = await _azistaEcommContext.GenericMaster.ToListAsync();
