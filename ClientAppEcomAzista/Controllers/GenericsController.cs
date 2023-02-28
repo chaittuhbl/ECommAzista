@@ -27,7 +27,7 @@ namespace ClientAppEcomAzista.Controllers
                 client.BaseAddress = new Uri(baseUrl.ToString());
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage Res = await client.GetAsync("api/GenericsApi");
+                HttpResponseMessage Res = await client.GetAsync("52.172.49.176:8087/api/GenericsApi");
                 if (Res.IsSuccessStatusCode)
                 {
                     var Response = Res.Content.ReadAsStringAsync().Result;
