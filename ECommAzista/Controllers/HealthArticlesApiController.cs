@@ -7,8 +7,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using static ECommAzista.Controllers.UploadApiController;
+//using static ECommAzista.Controllers.UploadApiController;
 //using ECommAzista.ViewModels;
+
 
 namespace ECommAzista.Controllers
 {
@@ -32,6 +33,13 @@ namespace ECommAzista.Controllers
         {
             public IFormFile files { get; set; }
         }
+        //[HttpGet("{imagePath}")]
+        //public IActionResult GetImage(string imagePath)
+        //{
+        //    var imageBytes = System.IO.File.ReadAllBytes(imagePath);
+        //    var base64Image = Convert.ToBase64String(imageBytes);
+        //    return Ok(new { Image = base64Image });
+        //}
 
         [HttpGet]
         public async Task<IActionResult> GetAsync()
@@ -64,7 +72,7 @@ namespace ECommAzista.Controllers
         //[Route("UploadImage")]
         public string UploadImage(IFormFile objFile)
         {
-            try
+            if (healthArticle == null)
             {
                 if (objFile.Length > 0)
                 {
@@ -94,36 +102,10 @@ namespace ECommAzista.Controllers
 
                 throw;
             }
+            return BadRequest(ModelState);
         }
 
-        //[HttpPost]
-        //[Route("UploadImage")]
-        //public async Task<string> UploadImage(IFormFile file)
-        //{
-
-        //    var special = Guid.NewGuid().ToString();
-        //    var filepath = Path.Combine(Directory.GetCurrentDirectory(),
-        //        @"\Images", special + "-" + file.FileName);
-        //    using (FileStream ms = new FileStream(filepath, FileMode.Create))
-        //    {
-        //        await file.CopyToAsync(ms);
-        //    }
-        //    var filename = special + "-" + file.FileName;
-        //    return filepath;
-
-        //}
-        [HttpPut]
-        public async Task<ActionResult<HealthArticle>> UpdateHealthArticle([FromForm] HealthArticle healthArticle)
-        {
-            if (healthArticle == null)
-            {
-                return BadRequest();
-            }
-
-            healthArticle.CreatedOnUtc = DateTime.UtcNow;
-            _azistaEcommContext.HealthArticle.Update(healthArticle);
-            return Ok(await _azistaEcommContext.SaveChangesAsync());
-        }
+        
 
         [HttpDelete]
         public async Task<ActionResult> DeleteHealthArticle(int Id)
@@ -132,6 +114,15 @@ namespace ECommAzista.Controllers
             {
                 return NotFound();
             }
+            //if (file != null && file.Length > 0)
+            //{
+            //    var Image = "/images/" + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            //    using (var stream = new FileStream("wwwroot" + Image, FileMode.Create))
+            //    {
+            //        await file.CopyToAsync(stream);
+            //    }
+            //    healthArticle.Image = Image;
+            //}
             var healthArticle = _azistaEcommContext.HealthArticle.Find(Id);
             _azistaEcommContext.HealthArticle.Remove(healthArticle);
             return Ok(await _azistaEcommContext.SaveChangesAsync());
