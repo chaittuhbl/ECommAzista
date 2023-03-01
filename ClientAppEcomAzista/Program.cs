@@ -18,6 +18,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Generics}/{action=Index}/{id?}");
+    pattern: "{controller=GenericsNew}/{action=Index}/{id?}");
 
 app.Run();

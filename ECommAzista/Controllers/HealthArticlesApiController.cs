@@ -54,56 +54,56 @@ namespace ECommAzista.Controllers
             var healthArticle = await _azistaEcommContext.HealthArticle.FindAsync(Id);
             return Ok(healthArticle);
         }
-        [HttpPost]
-        public async Task<IActionResult> PostHealthArticle([FromForm] HealthArticle healthArticle)
-        {
-            if (healthArticle == null)
-            {
-                return BadRequest();
-            }
-            // generic.CreatedOnUtc = DateTime.UtcNow;
-            string path = UploadImage(healthArticle.FileUri);
-            healthArticle.Image = path;
-            healthArticle.CreatedOnUtc = DateTime.UtcNow;
-            await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
-            return Ok(await _azistaEcommContext.SaveChangesAsync());
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> PostHealthArticle([FromForm] HealthArticle healthArticle)
+        //{
+        //    if (healthArticle == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    // generic.CreatedOnUtc = DateTime.UtcNow;
+        //    string path = UploadImage(healthArticle.FileUri);
+        //    healthArticle.Image = path;
+        //    healthArticle.CreatedOnUtc = DateTime.UtcNow;
+        //    await _azistaEcommContext.HealthArticle.AddAsync(healthArticle);
+        //    return Ok(await _azistaEcommContext.SaveChangesAsync());
+        //}
         //[HttpPost]
         //[Route("UploadImage")]
-        public string UploadImage(IFormFile objFile)
-        {
-            if (healthArticle == null)
-            {
-                if (objFile.Length > 0)
-                {
-                    string wwwPath = this.environment.WebRootPath;
-                    string contentPath = this.environment.ContentRootPath;
-                    if (!Directory.Exists(wwwPath + "\\Upload\\"))
-                    {
-                        Directory.CreateDirectory(environment.WebRootPath + "\\Upload\\");
-                    }
-                    using (FileStream fileStream = System.IO.File.Create(environment.WebRootPath + "\\Upload\\" + objFile.FileName))
-                    {
-                        objFile.CopyTo(fileStream);
-                        fileStream.Flush();
-                        var imgupload = "\\Upload\\" + objFile.FileName;
-                        // return imgupload;
-                        string path = Request.Host.ToUriComponent()+imgupload;                      
-                        return path;                    
-                    }
-                }
-                else
-                {
-                    return "Failed";
-                }
-            }
-            catch (Exception)
-            {
+        //public string UploadImage(IFormFile objFile)
+        //{
+        //    if (healthArticle == null)
+        //    {
+        //        if (objFile.Length > 0)
+        //        {
+        //            string wwwPath = this.environment.WebRootPath;
+        //            string contentPath = this.environment.ContentRootPath;
+        //            if (!Directory.Exists(wwwPath + "\\Upload\\"))
+        //            {
+        //                Directory.CreateDirectory(environment.WebRootPath + "\\Upload\\");
+        //            }
+        //            using (FileStream fileStream = System.IO.File.Create(environment.WebRootPath + "\\Upload\\" + objFile.FileName))
+        //            {
+        //                objFile.CopyTo(fileStream);
+        //                fileStream.Flush();
+        //                var imgupload = "\\Upload\\" + objFile.FileName;
+        //                // return imgupload;
+        //                string path = Request.Host.ToUriComponent()+imgupload;                      
+        //                return path;                    
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return "Failed";
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-            return BadRequest(ModelState);
-        }
+        //        throw;
+        //    }
+        //    return BadRequest(ModelState);
+        //}
 
         
 
