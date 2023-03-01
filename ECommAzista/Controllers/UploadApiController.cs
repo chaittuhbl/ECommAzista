@@ -37,7 +37,7 @@ namespace ECommAzista.Controllers
         [HttpPost]
         public async Task<string> Post([FromForm] FIleUploadApi objFile)
         {
-            List<Employee> empList = JsonConvert.DeserializeObject<List<Employee>>(objFile.Employees);
+            //List<Employee> empList = JsonConvert.DeserializeObject<List<Employee>>(objFile.Employees);
             try
             {
                 if (objFile.files.Length > 0)
